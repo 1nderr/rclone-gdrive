@@ -111,6 +111,37 @@ rclone bisync ~/gdrive gdrive: \
 - Bisync state is stored in `~/.cache/rclone/bisync/`.
 - If a file is modified on both sides between syncs, the newer version wins and the older is renamed with a `.conflict` suffix.
 
+## Verification
+
+After setup, run these steps to confirm everything is working:
+
+```bash
+# 1. Check the timer is active and firing every ~1 minute
+systemctl --user list-timers | grep bisync
+
+# 2. Check the file watcher is running
+systemctl --user status rclone-bisync-watch.service
+
+# 3. Test local → remote sync (inotify-triggered, should appear within ~7 seconds)
+touch ~/gdrive/test-sync.txt
+sleep 7
+rclone lsf gdrive: | grep test-sync
+
+# 4. Test remote → local sync
+#    Delete the test file from Google Drive (web/phone) or via:
+rclone delete gdrive:test-sync.txt
+#    Then wait ~1 minute or trigger manually:
+systemctl --user start rclone-bisync.service
+ls ~/gdrive/test-sync.txt  # should say "No such file or directory"
+
+# 5. Verify file counts match
+rclone size gdrive:
+find ~/gdrive -type f | wc -l
+
+# 6. Check logs for errors
+tail -20 ~/.local/share/rclone/bisync.log
+```
+
 ## Notes
 
 - Deleted files are recoverable from Google Drive's trash for 30 days
