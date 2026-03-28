@@ -1,0 +1,26 @@
+[Unit]
+Description=rclone bisync for Google Drive
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/rclone bisync /home/user/gdrive gdrive: \
+  --transfers 8 \
+  --checkers 16 \
+  --conflict-resolve newer \
+  --conflict-loser num \
+  --conflict-suffix conflict \
+  --recover \
+  --resilient \
+  --max-delete 50 \
+  --check-sync true \
+  --create-empty-src-dirs \
+  --fix-case \
+  --log-file /home/user/.local/share/rclone/bisync.log \
+  --log-level INFO
+Nice=10
+IOSchedulingClass=idle
+
+[Install]
+WantedBy=default.target

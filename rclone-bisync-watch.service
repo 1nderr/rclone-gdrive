@@ -1,0 +1,13 @@
+[Unit]
+Description=Watch ~/gdrive for changes and trigger rclone bisync
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/home/user/.local/bin/rclone-bisync-watch.sh
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target
