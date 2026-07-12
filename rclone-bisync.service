@@ -13,6 +13,7 @@ ExecStart=/usr/bin/rclone bisync /home/user/gdrive gdrive: \
   --conflict-suffix conflict \
   --recover \
   --resilient \
+  --max-lock 15m \
   --max-delete 50 \
   --check-sync true \
   --create-empty-src-dirs \
