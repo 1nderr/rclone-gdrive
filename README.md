@@ -1,5 +1,8 @@
 # rclone - Google Drive Bidirectional Sync
 
+> **AI Disclaimer**
+> This setup and its documentation were developed collaboratively with AI assistance. The sync script and systemd units have been tested for stability, but behavior may vary across different distributions, rclone versions, and systemd or filesystem configurations. Since bisync deletes and overwrites files on both sides, please review the scripts and test with a small directory before pointing them at an entire Drive.
+
 Local mirror of Google Drive using `rclone bisync`. Files live at `~/gdrive` as real local files and sync bidirectionally with Google Drive every 1 minute via a systemd timer, with near-instant sync on local changes via inotifywait.
 
 ## Features
